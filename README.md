@@ -7,6 +7,7 @@
 </p>
 <p> Here are the results training with the "UNetFC" model, which was obtained in 29 epochs.
 </p>
+
 | Type of noise | Recall | Precision | F1 Score |
 | ------------- | ------ | --------- | -------- |
 | None          | 0.82   | 0.76      | 0.79     |
