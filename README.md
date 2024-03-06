@@ -5,7 +5,7 @@
 </p>
 <p> We compute the DWT and energy of each images that we feed into the network. We also add additional information to the fully connected layers, including: skewness, kurtosis, entropy, correlation.
 </p>
-<p> Here are the results training with the "UNetFC3" model on SNR levels [10 - 15 - 20], which was obtained in 26 epochs.
+<p> Here are the results training with the "UNetFC3" model on SNR levels [10 - 15 - 20], which was obtained in 29 epochs.
 </p>
 
 | Type of noise | Recall | Precision | F1 Score |
