@@ -25,7 +25,7 @@ def speckle_noise(value, image):
     return skimage.util.random_noise(image.copy(), mode='speckle', var = speckle_db(value, image.shape[0]*image.shape[1], image.copy()), clip=True)
 
 def snr_percent(value):
-    return 1 - 1/(1+np.exp(-value/10))
+    return 10**(-value/10)/(1+10**(-value/10))
 
 def salt_and_pepper(value, image):
     return skimage.util.random_noise(image.copy(), mode='s&p', amount=snr_percent(value))
@@ -37,10 +37,9 @@ def pepper(value, image):
     return skimage.util.random_noise(image.copy(), mode='pepper', amount=snr_percent(value))
 
 def poisson_noise(value, image):
-    i_object = image.copy()
-    value = gaussian_db(value, i_object.shape[0]*i_object.shape[1], i_object.copy())
-    noise_mask = np.random.poisson(i_object)
-    return i_object + noise_mask*value
+    value = np.var(image*255)/(10**(value/10))
+    noise = np.random.poisson(value * np.ones(np.shape(image)))
+    return (image.copy() + np.int64(noise)/255)
 
 def calculate_dwt(image):
     coeffs = pywt.dwt2(image, 'haar')
@@ -83,7 +82,6 @@ def visualise_data(pathSave, Y, Z):
     plt.xlabel('Type de bruit')
     plt.ylabel('Nombre d\'images')
     plt.title('Répartition des types de bruit')
-    print(pathSave + '/Repartition_bruit.png')
     plt.savefig(pathSave + '/Repartition_bruit.png')
     plt.clf()
 

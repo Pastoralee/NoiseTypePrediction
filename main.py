@@ -5,6 +5,7 @@ import torch.nn as nn
 from networks.UNetLatent import UnetLatent
 from networks.UNetBiais import UnetBiais
 from networks.UNetFC import UnetFC
+from networks.UNetFC3 import UnetFC3
 from networks.EncoderMLP import EncoderMLP
 import train as tr
 
@@ -19,6 +20,8 @@ class Args():
     shuffle: bool #mélanger les données
     epochs: int
     visualise_data: bool #affiche des détails sur les données utilisé pour l'entraînement
+    denoise_data: bool #débruite les images contenues dans les données
+    include_orig: bool #inclure l'image d'origine dans les données d'entraînement
     loss: torch.nn.Module
     model_name: str #Biais, FC, Latent, MLP
 
@@ -31,6 +34,8 @@ args = Args(pathData = "D:\\Projet Imagerie\\data\\high-224",
             shuffle = True,
             epochs = 30,
             visualise_data = False,
+            denoise_data = True,
+            include_orig = True,
             loss = nn.CrossEntropyLoss(),
             model_name="FC")
 
@@ -38,7 +43,11 @@ train_loader, test_loader = load_dataset(args)
 
 match args.model_name:
     case "FC":
-        model = UnetFC()
+        if args.include_orig:
+            args.model_name = "FC3"
+            model = UnetFC3()
+        else:
+            model = UnetFC()
         model = model.to(args.device)
     case "Biais":
         model = UnetBiais()

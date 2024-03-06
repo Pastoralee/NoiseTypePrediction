@@ -8,7 +8,6 @@ import util as ut
 def train_unet_model(model, args, train_loader, test_loader):
     optimizer = Prodigy(model.parameters(), lr=1., weight_decay=0.01)
     scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
-    scheduler = None
     losses, epochs, metrics_dict_train_save, metrics_dict_test_save = [], [], [], []
     for epoch in range(args.epochs):
         print(f"Epoch {epoch+1}/{args.epochs}")
